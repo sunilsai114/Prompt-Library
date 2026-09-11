@@ -1,0 +1,52 @@
+name: Topic Radar digest
+
+on:
+  schedule:
+    # Every Monday at 08:00 UTC. Edit this to change cadence.
+    - cron: "0 8 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r requirements.txt
+
+      - name: Check for API key
+        id: check_key
+        run: |
+          if [ -z "${{ secrets.GEMINI_API_KEY }}" ]; then
+            echo "GEMINI_API_KEY secret not set — skipping this run."
+            echo "Add it under Settings > Secrets and variables > Actions."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run Topic Radar
+        if: steps.check_key.outputs.skip == 'false'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python topic_radar/digest.py --top 8
+
+      - name: Rebuild site
+        if: steps.check_key.outputs.skip == 'false'
+        run: python site/generate.py
+
+      - name: Commit results
+        if: steps.check_key.outputs.skip == 'false'
+        run: |
+          git config user.name "tech2you-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add topic_radar/digests docs
+          git diff --cached --quiet || git commit -m "Auto: weekly Topic Radar digest"
+          git push
