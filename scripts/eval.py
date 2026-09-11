@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""Claude-powered eval harness for prompt library entries.
+"""LLM-powered eval harness for prompt library entries.
 
 Usage: python scripts/eval.py prompts/examples/code-review-agent.yaml
 """
 
 import argparse
-import os
 import sys
 from datetime import datetime, timezone
+from pathlib import Path
 
 try:
     from dotenv import load_dotenv
@@ -15,14 +15,18 @@ try:
 except ImportError:
     pass
 
-from ruamel.yaml import YAML
-import anthropic
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from common.llm import LLMError, complete  # noqa: E402
+
+from ruamel.yaml import YAML  # noqa: E402
 
 yaml = YAML()
 yaml.preserve_quotes = True
 yaml.width = 100
 
-MODEL = "claude-sonnet-5"
+# Defensive cap: a prompt file with runaway test_cases shouldn't silently burn
+# through a free-tier quota (or a bill, if using Claude).
+MAX_TEST_CASES = 10
 
 
 def render(template: str, inputs: dict) -> str:
@@ -32,17 +36,11 @@ def render(template: str, inputs: dict) -> str:
     return rendered
 
 
-def run_prompt(client: anthropic.Anthropic, template: str, inputs: dict) -> str:
-    rendered = render(template, inputs)
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=2048,
-        messages=[{"role": "user", "content": rendered}],
-    )
-    return "".join(block.text for block in response.content if block.type == "text")
+def run_prompt(template: str, inputs: dict) -> str:
+    return complete(render(template, inputs), max_tokens=2048)
 
 
-def score_response(client: anthropic.Anthropic, response_text: str, expected_contains: list) -> dict:
+def score_response(response_text: str, expected_contains: list) -> dict:
     if not expected_contains:
         rubric = (
             "The expected behavior was that the response should NOT raise any "
@@ -69,12 +67,7 @@ Reply with exactly two lines:
 score: <integer 1-5>
 notes: <one sentence on what was missing or well done>"""
 
-    result = client.messages.create(
-        model=MODEL,
-        max_tokens=200,
-        messages=[{"role": "user", "content": grading_prompt}],
-    )
-    text = "".join(block.text for block in result.content if block.type == "text")
+    text = complete(grading_prompt, max_tokens=200)
 
     score, notes = None, text.strip()
     for line in text.splitlines():
@@ -93,30 +86,31 @@ def main():
     parser.add_argument("prompt_file", help="Path to a prompt YAML file")
     args = parser.parse_args()
 
-    api_key = os.environ.get("ANTHROPIC_API_KEY")
-    if not api_key:
-        sys.exit("ANTHROPIC_API_KEY is not set. Copy .env.example to .env and fill it in, or export it directly.")
-
     with open(args.prompt_file, encoding="utf-8") as f:
         data = yaml.load(f)
 
     test_cases = data.get("test_cases") or []
     if not test_cases:
         sys.exit(f"{args.prompt_file} has no test_cases to run.")
+    if len(test_cases) > MAX_TEST_CASES:
+        print(f"Note: only running the first {MAX_TEST_CASES} of {len(test_cases)} test_cases.")
+        test_cases = test_cases[:MAX_TEST_CASES]
 
-    client = anthropic.Anthropic(api_key=api_key)
     template = data["prompt"]
 
-    scores = []
-    notes = []
-    for case in test_cases:
-        print(f"Running: {case['name']}")
-        response_text = run_prompt(client, template, case.get("inputs", {}))
-        result = score_response(client, response_text, case.get("expected_contains", []))
-        print(f"  score={result['score']} notes={result['notes']}")
-        if result["score"] is not None:
-            scores.append(result["score"])
-        notes.append(f"{case['name']}: {result['notes']}")
+    try:
+        scores = []
+        notes = []
+        for case in test_cases:
+            print(f"Running: {case['name']}")
+            response_text = run_prompt(template, case.get("inputs", {}))
+            result = score_response(response_text, case.get("expected_contains", []))
+            print(f"  score={result['score']} notes={result['notes']}")
+            if result["score"] is not None:
+                scores.append(result["score"])
+            notes.append(f"{case['name']}: {result['notes']}")
+    except LLMError as exc:
+        sys.exit(str(exc))
 
     avg_score = round(sum(scores) / len(scores), 2) if scores else None
 

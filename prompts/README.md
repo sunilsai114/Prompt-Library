@@ -19,7 +19,7 @@ graph:                         # only present when type: graph_node
   downstream: [string]         # ids of nodes this one feeds into
 
 model:
-  recommended: string          # e.g. claude-sonnet-5
+  recommended: string          # e.g. claude-sonnet-5, gemini-2.0-flash
   min_context: int             # optional, tokens
 
 variables:                     # inputs the prompt template expects
@@ -56,6 +56,7 @@ eval:                          # written by scripts/eval.py — don't hand-edit
 python scripts/eval.py prompts/examples/your-prompt.yaml
 ```
 
-This calls Claude once per test case to run the prompt, then once more to score
-the response against `expected_contains`, and writes the result into the file's
-`eval` block.
+This calls the LLM (Gemini's free tier by default, or Claude if `ANTHROPIC_API_KEY`
+is set — see the root [`README.md`](../README.md#setup)) once per test case to run
+the prompt, then once more to score the response against `expected_contains`, and
+writes the result into the file's `eval` block.
