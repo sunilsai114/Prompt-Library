@@ -1,4 +1,4 @@
-# Tech2You
+# Prompt-Library
 
 Personal AI-literacy hub behind the **Tech2You** tech page — one place to learn, source content ideas, and reference material for videos.
 
