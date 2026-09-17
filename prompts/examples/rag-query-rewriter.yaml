@@ -1,0 +1,49 @@
+id: rag-query-rewriter
+title: RAG Query Rewriter
+description: Rewrites a vague, pronoun-laden follow-up question into a self-contained query before it hits retrieval.
+category: single-prompt
+
+type: standalone
+
+model:
+  recommended: gemini-3.8-flash
+  min_context: 10000
+
+variables:
+  - name: conversation_history
+    type: string
+    required: false
+    description: Prior turns, most recent last. Empty if this is the first question.
+  - name: user_question
+    type: string
+    required: true
+    description: The latest question, possibly relying on unstated context ("what about the older one?")
+
+output_format:
+  type: text
+
+prompt: |
+  Rewrite the user's question into a single, self-contained search query —
+  resolve pronouns and implicit references using the conversation history,
+  drop filler words, keep it specific enough to retrieve the right document.
+
+  Conversation so far:
+  {{conversation_history}}
+
+  Latest question: {{user_question}}
+
+  Output only the rewritten query, nothing else.
+
+test_cases:
+  - name: resolves a pronoun using prior turn
+    inputs:
+      conversation_history: |
+        User: What's the context window for Claude Sonnet 5?
+        Assistant: 200K tokens.
+      user_question: what about the older one?
+    expected_contains: ["Claude", "context window"]
+
+eval:
+  last_run: null
+  score: null
+  notes: null

@@ -1,0 +1,54 @@
+id: summarizer
+title: Review Summarizer
+description: Turns the reviewer agent's structured findings into a short PR comment a human would actually want to read.
+category: agent-recipe
+
+type: graph_node
+graph:
+  position: summarizer
+  upstream: [code-review-agent]
+  downstream: []
+
+model:
+  recommended: gemini-3.8-flash
+  min_context: 20000
+
+variables:
+  - name: findings_json
+    type: string
+    required: true
+    description: 'The reviewer''s JSON output: {"findings": [{"file", "line", "issue", "fix"}]}'
+
+output_format:
+  type: text
+
+prompt: |
+  Turn this reviewer output into a short PR comment.
+
+  If findings is empty, write one friendly line saying the diff looks good —
+  don't invent caveats. Otherwise, open with a one-line summary of how many
+  issues and how serious, then list each as a bullet: `file:line — issue
+  (fix: ...)`. Keep the whole thing under 120 words. No preamble like "Here's
+  a summary" — just the comment itself.
+
+  Findings:
+  {{findings_json}}
+
+test_cases:
+  - name: summarizes two findings concisely
+    inputs:
+      findings_json: |
+        {"findings": [
+          {"file": "list_utils.py", "line": 2, "issue": "off-by-one excludes last element", "fix": "use n not n-1"},
+          {"file": "auth.py", "line": 40, "issue": "token compared with == instead of constant-time compare", "fix": "use hmac.compare_digest"}
+        ]}
+    expected_contains: ["list_utils.py", "auth.py", "fix"]
+  - name: handles no findings without inventing issues
+    inputs:
+      findings_json: '{"findings": []}'
+    expected_contains: []
+
+eval:
+  last_run: null
+  score: null
+  notes: null

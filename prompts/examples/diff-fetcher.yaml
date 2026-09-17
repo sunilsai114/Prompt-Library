@@ -1,0 +1,52 @@
+id: diff-fetcher
+title: Diff Normalizer
+description: Cleans up a messy, partial, or copy-pasted diff into proper unified diff format before it reaches the reviewer.
+category: agent-recipe
+
+type: graph_node
+graph:
+  position: fetcher
+  upstream: []
+  downstream: [code-review-agent]
+
+model:
+  recommended: gemini-3.8-flash
+  min_context: 20000
+
+variables:
+  - name: raw_diff
+    type: string
+    required: true
+    description: A diff that may be missing headers, have inconsistent context lines, or include chat artifacts
+
+output_format:
+  type: text
+
+prompt: |
+  Reformat the following into a valid unified diff: proper `---`/`+++` file
+  headers and `@@` hunk headers, correct `+`/`-`/` ` line prefixes.
+
+  Do not add, remove, or reorder any actual code changes — only fix the diff
+  formatting itself. If you can't tell which file a hunk belongs to, use the
+  filename mentioned nearest to it in the input; if none is mentioned, use
+  `unknown_file`.
+
+  Input:
+  {{raw_diff}}
+
+  Output only the corrected diff, no commentary.
+
+test_cases:
+  - name: adds missing file headers and hunk header
+    inputs:
+      raw_diff: |
+        def add(a, b):
+        -    return a + b + 1
+        +    return a + b
+        this is in math_utils.py
+    expected_contains: ["---", "+++", "@@", "math_utils.py"]
+
+eval:
+  last_run: null
+  score: null
+  notes: null
