@@ -14,7 +14,7 @@ import os
 
 import requests
 
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.0-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
 CLAUDE_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5")
 
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
@@ -61,6 +61,13 @@ def _complete_gemini(prompt: str, max_tokens: int) -> str:
         raise LLMError(
             "Gemini free-tier rate limit hit. Wait a bit and retry, or reduce "
             "how many items/test cases you're processing in one run."
+        )
+    if resp.status_code == 404:
+        raise LLMError(
+            f"Gemini model '{GEMINI_MODEL}' wasn't found — Google retires model names "
+            "over time. List current ones at "
+            "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_KEY "
+            "and set GEMINI_MODEL to one of them (in .env)."
         )
     resp.raise_for_status()
     data = resp.json()
