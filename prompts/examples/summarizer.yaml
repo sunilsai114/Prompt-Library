@@ -1,6 +1,7 @@
 id: summarizer
 title: Review Summarizer
-description: Turns the reviewer agent's structured findings into a short PR comment a human would actually want to read.
+description: Turns the reviewer agent's structured findings into a short PR comment a human would 
+  actually want to read.
 category: agent-recipe
 
 type: graph_node
@@ -14,10 +15,10 @@ model:
   min_context: 20000
 
 variables:
-  - name: findings_json
-    type: string
-    required: true
-    description: 'The reviewer''s JSON output: {"findings": [{"file", "line", "issue", "fix"}]}'
+- name: findings_json
+  type: string
+  required: true
+  description: 'The reviewer''s JSON output: {"findings": [{"file", "line", "issue", "fix"}]}'
 
 output_format:
   type: text
@@ -35,20 +36,23 @@ prompt: |
   {{findings_json}}
 
 test_cases:
-  - name: summarizes two findings concisely
-    inputs:
-      findings_json: |
-        {"findings": [
-          {"file": "list_utils.py", "line": 2, "issue": "off-by-one excludes last element", "fix": "use n not n-1"},
-          {"file": "auth.py", "line": 40, "issue": "token compared with == instead of constant-time compare", "fix": "use hmac.compare_digest"}
-        ]}
-    expected_contains: ["list_utils.py", "auth.py", "fix"]
-  - name: handles no findings without inventing issues
-    inputs:
-      findings_json: '{"findings": []}'
-    expected_contains: []
+- name: summarizes two findings concisely
+  inputs:
+    findings_json: |
+      {"findings": [
+        {"file": "list_utils.py", "line": 2, "issue": "off-by-one excludes last element", "fix": "use n not n-1"},
+        {"file": "auth.py", "line": 40, "issue": "token compared with == instead of constant-time compare", "fix": "use hmac.compare_digest"}
+      ]}
+  expected_contains: ["list_utils.py", "auth.py", "fix"]
+- name: handles no findings without inventing issues
+  inputs:
+    findings_json: '{"findings": []}'
+  expected_contains: []
 
 eval:
-  last_run: null
-  score: null
-  notes: null
+  last_run: '2026-09-24T04:28:05Z'
+  score: 5.0
+  notes: 'summarizes two findings concisely: The response clearly identifies all three required concepts—list_utils.py,
+    auth.py, and the respective fixes—within the context of the code review. | handles no findings without
+    inventing issues: The response correctly identified that there were no issues to flag and provided
+    appropriate positive reinforcement.'

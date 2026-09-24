@@ -46,6 +46,8 @@ test_cases:
   expected_contains: ["Claude", "context window"]
 
 eval:
-  last_run: '2026-09-24T04:15:54Z'
+  last_run: '2026-09-24T04:28:33Z'
   score: 2.0
-  notes: 'resolves a pronoun using prior turn: '
+  notes: 'resolves a pronoun using prior turn: The response fails to provide any actual information about
+    the context window size or meaningful details regarding Claude, providing only a fragment of a search
+    query instead of a complete answer.'

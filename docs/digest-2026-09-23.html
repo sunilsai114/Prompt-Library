@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Review Summarizer · Tech2You</title>
+<title>2026-09-23 · Tech2You</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -191,7 +191,7 @@ footer {
 <div class="bg-grid"></div>
 <header>
   <a class="brand" href="index.html">tech2you</a>
-  <nav><a href="index.html">Home</a><a href="prompts.html" class=active>Prompt Library</a><a href="digests.html">Topic Radar</a></nav>
+  <nav><a href="index.html">Home</a><a href="prompts.html">Prompt Library</a><a href="digests.html" class=active>Topic Radar</a></nav>
 </header>
 <div class="statusbar mono">
   <span>PROMPTS: 05</span>
@@ -203,39 +203,56 @@ footer {
   <span class="live"><span class="blip"></span>LIVE</span>
 </div>
 <main>
-
-<a class="back" href="prompts.html">&larr; All prompts</a>
-<h1>Review Summarizer</h1>
-<p class="meta">
-  <span class="badge">agent-recipe</span>
-  <span class="badge alt">gemini-3.8-flash</span>
-</p>
-<p>Turns the reviewer agent&#x27;s structured findings into a short PR comment a human would actually want to read.</p>
-<h2>Graph position</h2>
-<p class="meta">This prompt is a <code>graph_node</code> node: <code>summarizer</code>
-&mdash; upstream: <code>code-review-agent</code>,
-downstream: <code>none</code></p>
-<h2>Variables</h2>
-<ul><li><code>findings_json</code> (string, required) — The reviewer&#x27;s JSON output: {&quot;findings&quot;: [{&quot;file&quot;, &quot;line&quot;, &quot;issue&quot;, &quot;fix&quot;}]}</li></ul>
-<h2>Prompt template</h2>
-<div class="terminal">
-  <div class="bar"><span></span><span></span><span></span></div>
-  <pre><code>Turn this reviewer output into a short PR comment.
-
-If findings is empty, write one friendly line saying the diff looks good —
-don&#x27;t invent caveats. Otherwise, open with a one-line summary of how many
-issues and how serious, then list each as a bullet: `file:line — issue
-(fix: ...)`. Keep the whole thing under 120 words. No preamble like &quot;Here&#x27;s
-a summary&quot; — just the comment itself.
-
-Findings:
-{{findings_json}}
-</code></pre>
-</div>
-<h2>Latest eval</h2>
-<p class="meta">Score: <code>5.0/5</code> &middot; Last run: <code>2026-09-24T04:28:05Z</code></p>
-<p class="meta">summarizes two findings concisely: The response clearly identifies all three required concepts—list_utils.py, auth.py, and the respective fixes—within the context of the code review. | handles no findings without inventing issues: The response correctly identified that there were no issues to flag and provided appropriate positive reinforcement.</p>
-
+<a class="back" href="digests.html">&larr; All digests</a>
+<h1>Topic Radar — 2026-09-23</h1>
+<h2>StudentBench: AI and human tutoring yield equivalent GRE learning gains</h2>
+<ul>
+<li>Source: arXiv (new paper)</li>
+<li>Link: http://arxiv.org/abs/2609.28470v1</li>
+<li>Video angle: We tested AI against human tutors to see if they actually teach the same way, and the results for student learning might surprise you.</li>
+</ul>
+<h2>Can gzip be a language model?</h2>
+<ul>
+<li>Source: Hacker News (398 points)</li>
+<li>Link: https://nathan.rs/posts/gzip-lm/</li>
+<li>Video angle: Can a standard file compression algorithm like gzip act as a simple artificial intelligence? Let's explore the surprising math behind it.</li>
+</ul>
+<h2>Detecting LLM-Generated Texts with “Classical” Machine Learning</h2>
+<ul>
+<li>Source: Hacker News (248 points)</li>
+<li>Link: https://blog.lyc8503.net/en/post/llm-classifier/</li>
+<li>Video angle: Think you can spot an AI-written essay? Experts are now using 'classical' machine learning methods to catch them more accurately than ever.</li>
+</ul>
+<h2>Can LLMs Reason About Runtime Behavior? A Repository-Level Dynamic Benchmark</h2>
+<ul>
+<li>Source: arXiv (new paper)</li>
+<li>Link: http://arxiv.org/abs/2609.28449v1</li>
+<li>Video angle: Most AI coding tools just guess based on text, but new benchmarks are testing if AI can actually 'reason' about how code will run in the real world.</li>
+</ul>
+<h2>nokia-applied-research/AnyJev</h2>
+<ul>
+<li>Source: GitHub (404 stars)</li>
+<li>Link: https://github.com/nokia-applied-research/AnyJev</li>
+<li>Video angle: What is a 'System One' decision model and how can you turn any regular chatbot into a specialized, high-speed decision engine?</li>
+</ul>
+<h2>pallavi-shekhar/ai-engineering-interview-questions-company-wise</h2>
+<ul>
+<li>Source: GitHub (640 stars)</li>
+<li>Link: https://github.com/pallavi-shekhar/ai-engineering-interview-questions-company-wise</li>
+<li>Video angle: If you want to work in AI, here is a curated cheat sheet of the exact interview questions top tech companies are asking right now.</li>
+</ul>
+<h2>haplollc/ThinkingOrbs</h2>
+<ul>
+<li>Source: GitHub (190 stars)</li>
+<li>Link: https://github.com/haplollc/ThinkingOrbs</li>
+<li>Video angle: Why do AI 'thinking' interfaces look the way they do? A look at how design cues like loading orbs shape our trust in AI agents.</li>
+</ul>
+<h2>Claude discovers a novel enzyme system with CRISPR-like repeats</h2>
+<ul>
+<li>Source: Hacker News (559 points)</li>
+<li>Link: https://www.anthropic.com/news/claude-discovers-novel-enzyme-system</li>
+<li>Video angle: Claude just helped scientists discover a new biological enzyme system—here is what this means for the future of AI-assisted scientific research.</li>
+</ul>
 </main>
 <footer class="mono">&gt; tech2you --status active · AI literacy hub · generated by site/generate.py</footer>
 <script>
