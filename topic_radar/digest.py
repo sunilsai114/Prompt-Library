@@ -61,13 +61,19 @@ Items (JSON):
 Respond with ONLY a JSON array (no prose, no markdown fences), ordered best-topic-first:
 [{{"index": 0, "video_angle": "one sentence video angle/hook"}}, ...]"""
 
-    text = complete(prompt, max_tokens=1500).strip()
+    # Generous budget: Gemini 3.x spends part of max_tokens on invisible
+    # "thinking" before the visible output, so a tight cap can truncate the
+    # JSON mid-array for a large catalog (seen firsthand with 45 items/1500).
+    text = complete(prompt, max_tokens=4000).strip()
     if text.startswith("```"):
         text = text.strip("`")
         if text.startswith("json"):
             text = text[4:]
 
-    picks = json.loads(text)
+    try:
+        picks = json.loads(text)
+    except json.JSONDecodeError as exc:
+        raise LLMError(f"Couldn't parse the curation response as JSON: {exc}\n\nRaw response:\n{text}") from exc
     return [{**items[pick["index"]], "video_angle": pick.get("video_angle", "")} for pick in picks]
 
 

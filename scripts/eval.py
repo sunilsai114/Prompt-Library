@@ -67,7 +67,10 @@ Reply with exactly two lines:
 score: <integer 1-5>
 notes: <one sentence on what was missing or well done>"""
 
-    text = complete(grading_prompt, max_tokens=200)
+    # Generous budget: Gemini 3.x spends part of max_tokens on invisible
+    # "thinking" before the visible reply, so a tight cap can silently
+    # truncate the score/notes output.
+    text = complete(grading_prompt, max_tokens=500)
 
     score = None
     for line in text.splitlines():
