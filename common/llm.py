@@ -11,10 +11,14 @@ billing stays off. See ../README.md for key-restriction steps.
 """
 
 import os
+import time
 
 import requests
 
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.8-flash")
+RETRY_STATUS_CODES = {502, 503, 504}
+MAX_RETRIES = 3
+
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
 CLAUDE_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5")
 
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
@@ -48,15 +52,32 @@ def complete(prompt: str, max_tokens: int = 1024) -> str:
 
 def _complete_gemini(prompt: str, max_tokens: int) -> str:
     api_key = os.environ["GEMINI_API_KEY"]
-    resp = requests.post(
-        GEMINI_URL,
-        params={"key": api_key},
-        json={
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"maxOutputTokens": max_tokens},
-        },
-        timeout=60,
-    )
+
+    resp = None
+    for attempt in range(MAX_RETRIES):
+        try:
+            resp = requests.post(
+                GEMINI_URL,
+                params={"key": api_key},
+                json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"maxOutputTokens": max_tokens},
+                },
+                timeout=60,
+            )
+        except requests.exceptions.RequestException as exc:
+            if attempt < MAX_RETRIES - 1:
+                time.sleep(2**attempt)  # 1s, 2s
+                continue
+            raise LLMError(
+                f"Couldn't reach Gemini after {MAX_RETRIES} attempts ({exc.__class__.__name__}) "
+                "— likely a network issue or Google's API being unreachable right now. Try again in a bit."
+            ) from exc
+        if resp.status_code in RETRY_STATUS_CODES and attempt < MAX_RETRIES - 1:
+            time.sleep(2**attempt)  # 1s, 2s
+            continue
+        break
+
     if resp.status_code == 429:
         raise LLMError(
             "Gemini free-tier rate limit hit. Wait a bit and retry, or reduce "
@@ -68,6 +89,12 @@ def _complete_gemini(prompt: str, max_tokens: int) -> str:
             "over time. List current ones at "
             "https://generativelanguage.googleapis.com/v1beta/models?key=YOUR_KEY "
             "and set GEMINI_MODEL to one of them (in .env)."
+        )
+    if resp.status_code in RETRY_STATUS_CODES:
+        raise LLMError(
+            f"Gemini's servers returned {resp.status_code} after {MAX_RETRIES} attempts — "
+            "this is on Google's end (overloaded/unavailable), not a problem with your "
+            "key or prompt. Try again in a bit."
         )
     resp.raise_for_status()
     data = resp.json()
