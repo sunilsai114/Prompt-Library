@@ -1,6 +1,7 @@
 id: rag-query-rewriter
 title: RAG Query Rewriter
-description: Rewrites a vague, pronoun-laden follow-up question into a self-contained query before it hits retrieval.
+description: Rewrites a vague, pronoun-laden follow-up question into a self-contained query before 
+  it hits retrieval.
 category: single-prompt
 
 type: standalone
@@ -10,14 +11,15 @@ model:
   min_context: 10000
 
 variables:
-  - name: conversation_history
-    type: string
-    required: false
-    description: Prior turns, most recent last. Empty if this is the first question.
-  - name: user_question
-    type: string
-    required: true
-    description: The latest question, possibly relying on unstated context ("what about the older one?")
+- name: conversation_history
+  type: string
+  required: false
+  description: Prior turns, most recent last. Empty if this is the first question.
+- name: user_question
+  type: string
+  required: true
+  description: The latest question, possibly relying on unstated context ("what about the older 
+    one?")
 
 output_format:
   type: text
@@ -35,15 +37,15 @@ prompt: |
   Output only the rewritten query, nothing else.
 
 test_cases:
-  - name: resolves a pronoun using prior turn
-    inputs:
-      conversation_history: |
-        User: What's the context window for Claude Sonnet 5?
-        Assistant: 200K tokens.
-      user_question: what about the older one?
-    expected_contains: ["Claude", "context window"]
+- name: resolves a pronoun using prior turn
+  inputs:
+    conversation_history: |
+      User: What's the context window for Claude Sonnet 5?
+      Assistant: 200K tokens.
+    user_question: what about the older one?
+  expected_contains: ["Claude", "context window"]
 
 eval:
-  last_run: null
-  score: null
-  notes: null
+  last_run: '2026-09-24T04:15:54Z'
+  score: 2.0
+  notes: 'resolves a pronoun using prior turn: '

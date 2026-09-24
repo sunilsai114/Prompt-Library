@@ -1,6 +1,7 @@
 id: diff-fetcher
 title: Diff Normalizer
-description: Cleans up a messy, partial, or copy-pasted diff into proper unified diff format before it reaches the reviewer.
+description: Cleans up a messy, partial, or copy-pasted diff into proper unified diff format before 
+  it reaches the reviewer.
 category: agent-recipe
 
 type: graph_node
@@ -14,10 +15,11 @@ model:
   min_context: 20000
 
 variables:
-  - name: raw_diff
-    type: string
-    required: true
-    description: A diff that may be missing headers, have inconsistent context lines, or include chat artifacts
+- name: raw_diff
+  type: string
+  required: true
+  description: A diff that may be missing headers, have inconsistent context lines, or include chat 
+    artifacts
 
 output_format:
   type: text
@@ -37,16 +39,16 @@ prompt: |
   Output only the corrected diff, no commentary.
 
 test_cases:
-  - name: adds missing file headers and hunk header
-    inputs:
-      raw_diff: |
-        def add(a, b):
-        -    return a + b + 1
-        +    return a + b
-        this is in math_utils.py
-    expected_contains: ["---", "+++", "@@", "math_utils.py"]
+- name: adds missing file headers and hunk header
+  inputs:
+    raw_diff: |
+      def add(a, b):
+      -    return a + b + 1
+      +    return a + b
+      this is in math_utils.py
+  expected_contains: ["---", "+++", "@@", "math_utils.py"]
 
 eval:
-  last_run: null
-  score: null
-  notes: null
+  last_run: '2026-09-24T04:17:00Z'
+  score: 5.0
+  notes: 'adds missing file headers and hunk header: '

@@ -69,15 +69,21 @@ notes: <one sentence on what was missing or well done>"""
 
     text = complete(grading_prompt, max_tokens=200)
 
-    score, notes = None, text.strip()
+    score = None
     for line in text.splitlines():
         if line.lower().startswith("score:"):
             try:
                 score = int(line.split(":", 1)[1].strip())
             except ValueError:
                 pass
-        if line.lower().startswith("notes:"):
-            notes = line.split(":", 1)[1].strip()
+
+    # Take everything after "notes:" rather than just that line's remainder —
+    # models sometimes put "notes:" on its own line with the text below it,
+    # which a same-line split would silently turn into an empty string.
+    lower_text = text.lower()
+    notes_idx = lower_text.find("notes:")
+    notes = text[notes_idx + len("notes:"):].strip() if notes_idx != -1 else text.strip()
+
     return {"score": score, "notes": notes}
 
 

@@ -18,7 +18,7 @@ import requests
 RETRY_STATUS_CODES = {502, 503, 504}
 MAX_RETRIES = 3
 
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-3.6-flash")
 CLAUDE_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-sonnet-5")
 
 GEMINI_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent"
