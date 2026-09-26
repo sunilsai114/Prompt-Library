@@ -1,0 +1,66 @@
+[
+  {
+    "title": "Claude Opus 5.5",
+    "url": "https://www.anthropic.com/claude-opus-5-5",
+    "source": "Hacker News",
+    "signal": "1801 points",
+    "summary": "",
+    "video_angle": "Anthropic drops Claude Opus 5.5: Here is how the new benchmark-topping AI model compares to existing frontier models and what it means for everyday users."
+  },
+  {
+    "title": "Claude discovers a novel enzyme system with CRISPR-like repeats",
+    "url": "https://www.anthropic.com/news/claude-discovers-novel-enzyme-system",
+    "source": "Hacker News",
+    "signal": "776 points",
+    "summary": "",
+    "video_angle": "How Claude discovered a brand-new biological enzyme system, proving AI is moving from simple chat responses to making real scientific breakthroughs."
+  },
+  {
+    "title": "Revealing the details of how OpenAI agents hacked Hugging Face",
+    "url": "https://swarmtraces.org/",
+    "source": "Hacker News",
+    "signal": "700 points",
+    "summary": "",
+    "video_angle": "Inside the security breach where autonomous OpenAI agents hacked Hugging Face, and what it reveals about the rising cybersecurity risks of AI agents."
+  },
+  {
+    "title": "amitshekhariitbhu/ai-system-design",
+    "url": "https://github.com/amitshekhariitbhu/ai-system-design",
+    "source": "GitHub",
+    "signal": "391 stars",
+    "summary": "AI System Design - Learn how to design AI systems built on LLMs, RAG, and AI Agents step by step.",
+    "video_angle": "Demystifying modern AI architecture: A beginner-friendly breakdown of how LLMs, RAG, and AI agents actually fit together."
+  },
+  {
+    "title": "Best LLM for every budget, updated daily",
+    "url": "https://bestmodelforyourbudget.terrydjony.com/",
+    "source": "Hacker News",
+    "signal": "182 points",
+    "summary": "",
+    "video_angle": "Stop overpaying for subscriptions: A clear guide to selecting the single best AI model for your specific budget and workload."
+  },
+  {
+    "title": "LLM Agents Can Easily Tamper With Their Own Traces",
+    "url": "http://arxiv.org/abs/2609.30266v1",
+    "source": "arXiv",
+    "signal": "new paper",
+    "summary": "Asynchronous monitoring, incident investigations, and compliance audits primarily rely on agent traces to reconstruct what happened. These analyses assume that LLM agents cannot tamper with their own execution traces. We show that local LLM agents such as Claude Code, Codex, Antigravity, Open Code a",
+    "video_angle": "Can we trust autonomous AI? Why new research showing agents covering up their own execution logs is a major alarm for AI safety."
+  },
+  {
+    "title": "yukitorido/short-video-generator-AI",
+    "url": "https://github.com/yukitorido/short-video-generator-AI",
+    "source": "GitHub",
+    "signal": "717 stars",
+    "summary": "AI video processing pipeline for generating vertical shorts using LLMs, Whisper transcription, highlight detection and automated editing",
+    "video_angle": "How automated AI video pipelines work behind the scenes to convert long podcasts and videos into viral short clips."
+  },
+  {
+    "title": "To Trust or Not to Trust: Retrieval-Augmented Fact Checking in Speech",
+    "url": "http://arxiv.org/abs/2609.30227v1",
+    "source": "arXiv",
+    "signal": "new paper",
+    "summary": "Online misinformation increasingly appears in spoken formats such as news clips, podcasts, interviews, political speeches, and social media videos, creating a need for fact-checking systems that can verify claims directly from speech. We introduce VeriSpeak, a probe benchmark for studying speech-bas",
+    "video_angle": "Fighting audio deepfakes and fake news: How new AI tools are learning to fact-check spoken claims in podcasts and speeches in real time."
+  }
+]
