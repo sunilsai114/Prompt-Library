@@ -77,7 +77,8 @@ Respond with ONLY a JSON array (no prose, no markdown fences), ordered best-topi
     return [{**items[pick["index"]], "video_angle": pick.get("video_angle", "")} for pick in picks]
 
 
-def write_digest(curated: list, out_path: Path) -> None:
+def write_digest(curated: list, md_path: Path, json_path: Path) -> None:
+    # Markdown: human-readable, diffs cleanly in git history.
     lines = [f"# Topic Radar — {date.today().isoformat()}", ""]
     for item in curated:
         lines.append(f"## {item['title']}")
@@ -85,7 +86,27 @@ def write_digest(curated: list, out_path: Path) -> None:
         lines.append(f"- Link: {item['url']}")
         lines.append(f"- Video angle: {item['video_angle']}")
         lines.append("")
-    out_path.write_text("\n".join(lines), encoding="utf-8")
+    md_path.write_text("\n".join(lines), encoding="utf-8")
+
+    # JSON: structured, so the site can render clickable cards instead of
+    # re-parsing markdown.
+    json_path.write_text(
+        json.dumps(
+            [
+                {
+                    "title": item["title"],
+                    "url": item["url"],
+                    "source": item["source"],
+                    "signal": item.get("signal", ""),
+                    "summary": item.get("summary", ""),
+                    "video_angle": item["video_angle"],
+                }
+                for item in curated
+            ],
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
 
 
 def main():
@@ -106,10 +127,12 @@ def main():
         sys.exit(str(exc))
 
     DIGESTS_DIR.mkdir(exist_ok=True)
-    out_path = DIGESTS_DIR / f"{date.today().isoformat()}.md"
-    write_digest(curated, out_path)
+    stem = date.today().isoformat()
+    md_path = DIGESTS_DIR / f"{stem}.md"
+    json_path = DIGESTS_DIR / f"{stem}.json"
+    write_digest(curated, md_path, json_path)
 
-    print(f"\nDigest written to {out_path}")
+    print(f"\nDigest written to {md_path}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,66 @@
+[
+  {
+    "title": "StudentBench: AI and human tutoring yield equivalent GRE learning gains",
+    "url": "http://arxiv.org/abs/2609.28470v1",
+    "source": "arXiv",
+    "signal": "new paper",
+    "summary": "",
+    "video_angle": "We tested AI against human tutors to see if they actually teach the same way, and the results for student learning might surprise you."
+  },
+  {
+    "title": "Can gzip be a language model?",
+    "url": "https://nathan.rs/posts/gzip-lm/",
+    "source": "Hacker News",
+    "signal": "398 points",
+    "summary": "",
+    "video_angle": "Can a standard file compression algorithm like gzip act as a simple artificial intelligence? Let's explore the surprising math behind it."
+  },
+  {
+    "title": "Detecting LLM-Generated Texts with \u201cClassical\u201d Machine Learning",
+    "url": "https://blog.lyc8503.net/en/post/llm-classifier/",
+    "source": "Hacker News",
+    "signal": "248 points",
+    "summary": "",
+    "video_angle": "Think you can spot an AI-written essay? Experts are now using 'classical' machine learning methods to catch them more accurately than ever."
+  },
+  {
+    "title": "Can LLMs Reason About Runtime Behavior? A Repository-Level Dynamic Benchmark",
+    "url": "http://arxiv.org/abs/2609.28449v1",
+    "source": "arXiv",
+    "signal": "new paper",
+    "summary": "",
+    "video_angle": "Most AI coding tools just guess based on text, but new benchmarks are testing if AI can actually 'reason' about how code will run in the real world."
+  },
+  {
+    "title": "nokia-applied-research/AnyJev",
+    "url": "https://github.com/nokia-applied-research/AnyJev",
+    "source": "GitHub",
+    "signal": "404 stars",
+    "summary": "",
+    "video_angle": "What is a 'System One' decision model and how can you turn any regular chatbot into a specialized, high-speed decision engine?"
+  },
+  {
+    "title": "pallavi-shekhar/ai-engineering-interview-questions-company-wise",
+    "url": "https://github.com/pallavi-shekhar/ai-engineering-interview-questions-company-wise",
+    "source": "GitHub",
+    "signal": "640 stars",
+    "summary": "",
+    "video_angle": "If you want to work in AI, here is a curated cheat sheet of the exact interview questions top tech companies are asking right now."
+  },
+  {
+    "title": "haplollc/ThinkingOrbs",
+    "url": "https://github.com/haplollc/ThinkingOrbs",
+    "source": "GitHub",
+    "signal": "190 stars",
+    "summary": "",
+    "video_angle": "Why do AI 'thinking' interfaces look the way they do? A look at how design cues like loading orbs shape our trust in AI agents."
+  },
+  {
+    "title": "Claude discovers a novel enzyme system with CRISPR-like repeats",
+    "url": "https://www.anthropic.com/news/claude-discovers-novel-enzyme-system",
+    "source": "Hacker News",
+    "signal": "559 points",
+    "summary": "",
+    "video_angle": "Claude just helped scientists discover a new biological enzyme system\u2014here is what this means for the future of AI-assisted scientific research."
+  }
+]

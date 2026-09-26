@@ -11,10 +11,10 @@ Usage: python site/generate.py
 """
 
 import html
+import json
 import shutil
 from pathlib import Path
 
-import markdown as md
 from ruamel.yaml import YAML
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -212,8 +212,16 @@ main { max-width: 1080px; margin: 0 auto; padding: 3rem 1.75rem 6rem; }
 .card:hover { transform: translateY(-4px); border-color: rgba(255,138,61,.4); box-shadow: 0 22px 50px -24px rgba(255,138,61,.4); }
 .card:hover::before { opacity: 1; }
 .card > * { position: relative; z-index: 1; }
-.card h3 { margin: 0 0 .5rem; font-size: 1.02rem; letter-spacing: -0.005em; font-weight: 600; }
+.card h3 { margin: 0 0 .5rem; font-size: 1.02rem; letter-spacing: -0.005em; font-weight: 600; color: var(--text); }
 .card p { color: var(--text-dim); margin: 0 0 .8rem; font-size: .92rem; font-family: var(--sans); }
+
+.topic-card { display: block; color: inherit; }
+.topic-card:hover { text-decoration: none; }
+.topic-card h3 { margin-top: .6rem; }
+.topic-link {
+  font-family: var(--mono); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--accent);
+}
 
 .badge {
   display: inline-block; font-size: .68rem; font-weight: 500; text-transform: uppercase; letter-spacing: .05em;
@@ -309,10 +317,15 @@ def load_prompts() -> list:
 
 
 def load_digests() -> list:
+    """Each digest is (stem, items) — items loaded from the JSON sibling of
+    the .md file. Digests written before JSON output existed are skipped
+    from the site (still readable as plain .md in the repo)."""
     digests = []
     if DIGESTS_DIR.exists():
-        for path in sorted(DIGESTS_DIR.glob("*.md"), reverse=True):
-            digests.append(path)
+        for path in sorted(DIGESTS_DIR.glob("*.json"), reverse=True):
+            with open(path, encoding="utf-8") as f:
+                items = json.load(f)
+            digests.append((path.stem, items))
     return digests
 
 
@@ -427,20 +440,31 @@ def build_digests_list(digests: list) -> str:
         )
     else:
         cards = ""
-        for path in digests:
+        for stem, items in digests:
             cards += f"""<div class="card">
-  <h3><a href="digest-{path.stem}.html">{path.stem}</a></h3>
+  <h3><a href="digest-{stem}.html">{stem}</a></h3>
+  <p>{len(items)} topic{"s" if len(items) != 1 else ""}</p>
 </div>
 """
     body = f'<span class="kicker">topic radar</span><h1>Video topic feed</h1>{cards}'
     return layout("Topic Radar", body, "digests.html")
 
 
-def build_digest_detail(path: Path) -> str:
-    content = path.read_text(encoding="utf-8")
-    rendered = md.markdown(content)
-    body = f'<a class="back" href="digests.html">&larr; All digests</a>\n{rendered}'
-    return layout(path.stem, body, "digests.html")
+def build_digest_detail(stem: str, items: list) -> str:
+    cards = ""
+    for item in items:
+        badge = f'<span class="badge">{html.escape(item.get("source", ""))}</span>'
+        if item.get("signal"):
+            badge += f'<span class="badge alt">{html.escape(item["signal"])}</span>'
+        cards += f"""<a class="card topic-card" href="{html.escape(item['url'])}" target="_blank" rel="noopener noreferrer">
+  {badge}
+  <h3>{html.escape(item['title'])}</h3>
+  <p>{html.escape(item.get('video_angle', ''))}</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+"""
+    body = f'<a class="back" href="digests.html">&larr; All digests</a>\n<h1>Topic Radar — {html.escape(stem)}</h1>\n{cards}'
+    return layout(stem, body, "digests.html")
 
 
 def main():
@@ -460,8 +484,8 @@ def main():
     for p in prompts:
         (OUT_DIR / f"prompt-{p['_slug']}.html").write_text(build_prompt_detail(p), encoding="utf-8")
 
-    for path in digests:
-        (OUT_DIR / f"digest-{path.stem}.html").write_text(build_digest_detail(path), encoding="utf-8")
+    for stem, items in digests:
+        (OUT_DIR / f"digest-{stem}.html").write_text(build_digest_detail(stem, items), encoding="utf-8")
 
     print(f"Built {3 + len(prompts) + len(digests)} pages into {OUT_DIR}")
 

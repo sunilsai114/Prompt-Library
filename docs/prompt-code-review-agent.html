@@ -150,8 +150,16 @@ main { max-width: 1080px; margin: 0 auto; padding: 3rem 1.75rem 6rem; }
 .card:hover { transform: translateY(-4px); border-color: rgba(255,138,61,.4); box-shadow: 0 22px 50px -24px rgba(255,138,61,.4); }
 .card:hover::before { opacity: 1; }
 .card > * { position: relative; z-index: 1; }
-.card h3 { margin: 0 0 .5rem; font-size: 1.02rem; letter-spacing: -0.005em; font-weight: 600; }
+.card h3 { margin: 0 0 .5rem; font-size: 1.02rem; letter-spacing: -0.005em; font-weight: 600; color: var(--text); }
 .card p { color: var(--text-dim); margin: 0 0 .8rem; font-size: .92rem; font-family: var(--sans); }
+
+.topic-card { display: block; color: inherit; }
+.topic-card:hover { text-decoration: none; }
+.topic-card h3 { margin-top: .6rem; }
+.topic-link {
+  font-family: var(--mono); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--accent);
+}
 
 .badge {
   display: inline-block; font-size: .68rem; font-weight: 500; text-transform: uppercase; letter-spacing: .05em;

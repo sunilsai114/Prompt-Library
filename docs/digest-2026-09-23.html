@@ -150,8 +150,16 @@ main { max-width: 1080px; margin: 0 auto; padding: 3rem 1.75rem 6rem; }
 .card:hover { transform: translateY(-4px); border-color: rgba(255,138,61,.4); box-shadow: 0 22px 50px -24px rgba(255,138,61,.4); }
 .card:hover::before { opacity: 1; }
 .card > * { position: relative; z-index: 1; }
-.card h3 { margin: 0 0 .5rem; font-size: 1.02rem; letter-spacing: -0.005em; font-weight: 600; }
+.card h3 { margin: 0 0 .5rem; font-size: 1.02rem; letter-spacing: -0.005em; font-weight: 600; color: var(--text); }
 .card p { color: var(--text-dim); margin: 0 0 .8rem; font-size: .92rem; font-family: var(--sans); }
+
+.topic-card { display: block; color: inherit; }
+.topic-card:hover { text-decoration: none; }
+.topic-card h3 { margin-top: .6rem; }
+.topic-link {
+  font-family: var(--mono); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--accent);
+}
 
 .badge {
   display: inline-block; font-size: .68rem; font-weight: 500; text-transform: uppercase; letter-spacing: .05em;
@@ -205,54 +213,55 @@ footer {
 <main>
 <a class="back" href="digests.html">&larr; All digests</a>
 <h1>Topic Radar — 2026-09-23</h1>
-<h2>StudentBench: AI and human tutoring yield equivalent GRE learning gains</h2>
-<ul>
-<li>Source: arXiv (new paper)</li>
-<li>Link: http://arxiv.org/abs/2609.28470v1</li>
-<li>Video angle: We tested AI against human tutors to see if they actually teach the same way, and the results for student learning might surprise you.</li>
-</ul>
-<h2>Can gzip be a language model?</h2>
-<ul>
-<li>Source: Hacker News (398 points)</li>
-<li>Link: https://nathan.rs/posts/gzip-lm/</li>
-<li>Video angle: Can a standard file compression algorithm like gzip act as a simple artificial intelligence? Let's explore the surprising math behind it.</li>
-</ul>
-<h2>Detecting LLM-Generated Texts with “Classical” Machine Learning</h2>
-<ul>
-<li>Source: Hacker News (248 points)</li>
-<li>Link: https://blog.lyc8503.net/en/post/llm-classifier/</li>
-<li>Video angle: Think you can spot an AI-written essay? Experts are now using 'classical' machine learning methods to catch them more accurately than ever.</li>
-</ul>
-<h2>Can LLMs Reason About Runtime Behavior? A Repository-Level Dynamic Benchmark</h2>
-<ul>
-<li>Source: arXiv (new paper)</li>
-<li>Link: http://arxiv.org/abs/2609.28449v1</li>
-<li>Video angle: Most AI coding tools just guess based on text, but new benchmarks are testing if AI can actually 'reason' about how code will run in the real world.</li>
-</ul>
-<h2>nokia-applied-research/AnyJev</h2>
-<ul>
-<li>Source: GitHub (404 stars)</li>
-<li>Link: https://github.com/nokia-applied-research/AnyJev</li>
-<li>Video angle: What is a 'System One' decision model and how can you turn any regular chatbot into a specialized, high-speed decision engine?</li>
-</ul>
-<h2>pallavi-shekhar/ai-engineering-interview-questions-company-wise</h2>
-<ul>
-<li>Source: GitHub (640 stars)</li>
-<li>Link: https://github.com/pallavi-shekhar/ai-engineering-interview-questions-company-wise</li>
-<li>Video angle: If you want to work in AI, here is a curated cheat sheet of the exact interview questions top tech companies are asking right now.</li>
-</ul>
-<h2>haplollc/ThinkingOrbs</h2>
-<ul>
-<li>Source: GitHub (190 stars)</li>
-<li>Link: https://github.com/haplollc/ThinkingOrbs</li>
-<li>Video angle: Why do AI 'thinking' interfaces look the way they do? A look at how design cues like loading orbs shape our trust in AI agents.</li>
-</ul>
-<h2>Claude discovers a novel enzyme system with CRISPR-like repeats</h2>
-<ul>
-<li>Source: Hacker News (559 points)</li>
-<li>Link: https://www.anthropic.com/news/claude-discovers-novel-enzyme-system</li>
-<li>Video angle: Claude just helped scientists discover a new biological enzyme system—here is what this means for the future of AI-assisted scientific research.</li>
-</ul>
+<a class="card topic-card" href="http://arxiv.org/abs/2609.28470v1" target="_blank" rel="noopener noreferrer">
+  <span class="badge">arXiv</span><span class="badge alt">new paper</span>
+  <h3>StudentBench: AI and human tutoring yield equivalent GRE learning gains</h3>
+  <p>We tested AI against human tutors to see if they actually teach the same way, and the results for student learning might surprise you.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="https://nathan.rs/posts/gzip-lm/" target="_blank" rel="noopener noreferrer">
+  <span class="badge">Hacker News</span><span class="badge alt">398 points</span>
+  <h3>Can gzip be a language model?</h3>
+  <p>Can a standard file compression algorithm like gzip act as a simple artificial intelligence? Let&#x27;s explore the surprising math behind it.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="https://blog.lyc8503.net/en/post/llm-classifier/" target="_blank" rel="noopener noreferrer">
+  <span class="badge">Hacker News</span><span class="badge alt">248 points</span>
+  <h3>Detecting LLM-Generated Texts with “Classical” Machine Learning</h3>
+  <p>Think you can spot an AI-written essay? Experts are now using &#x27;classical&#x27; machine learning methods to catch them more accurately than ever.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="http://arxiv.org/abs/2609.28449v1" target="_blank" rel="noopener noreferrer">
+  <span class="badge">arXiv</span><span class="badge alt">new paper</span>
+  <h3>Can LLMs Reason About Runtime Behavior? A Repository-Level Dynamic Benchmark</h3>
+  <p>Most AI coding tools just guess based on text, but new benchmarks are testing if AI can actually &#x27;reason&#x27; about how code will run in the real world.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="https://github.com/nokia-applied-research/AnyJev" target="_blank" rel="noopener noreferrer">
+  <span class="badge">GitHub</span><span class="badge alt">404 stars</span>
+  <h3>nokia-applied-research/AnyJev</h3>
+  <p>What is a &#x27;System One&#x27; decision model and how can you turn any regular chatbot into a specialized, high-speed decision engine?</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="https://github.com/pallavi-shekhar/ai-engineering-interview-questions-company-wise" target="_blank" rel="noopener noreferrer">
+  <span class="badge">GitHub</span><span class="badge alt">640 stars</span>
+  <h3>pallavi-shekhar/ai-engineering-interview-questions-company-wise</h3>
+  <p>If you want to work in AI, here is a curated cheat sheet of the exact interview questions top tech companies are asking right now.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="https://github.com/haplollc/ThinkingOrbs" target="_blank" rel="noopener noreferrer">
+  <span class="badge">GitHub</span><span class="badge alt">190 stars</span>
+  <h3>haplollc/ThinkingOrbs</h3>
+  <p>Why do AI &#x27;thinking&#x27; interfaces look the way they do? A look at how design cues like loading orbs shape our trust in AI agents.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+<a class="card topic-card" href="https://www.anthropic.com/news/claude-discovers-novel-enzyme-system" target="_blank" rel="noopener noreferrer">
+  <span class="badge">Hacker News</span><span class="badge alt">559 points</span>
+  <h3>Claude discovers a novel enzyme system with CRISPR-like repeats</h3>
+  <p>Claude just helped scientists discover a new biological enzyme system—here is what this means for the future of AI-assisted scientific research.</p>
+  <span class="topic-link">Read source &rarr;</span>
+</a>
+
 </main>
 <footer class="mono">&gt; tech2you --status active · AI literacy hub · generated by site/generate.py</footer>
 <script>
